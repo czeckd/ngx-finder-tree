@@ -48,7 +48,8 @@ export class FinderTreeComponent implements OnChanges, OnDestroy {
 		if (changes.showRoot) {
 			if (this.panelsById.has(0)) {
 				const root = this.panelsById.get(0);
-				(<FinderTreePanelComponent>root.instance).display = (this.showRoot ? true : false);
+				(<FinderTreePanelComponent>root.instance).display = this.showRoot;
+				(<FinderTreePanelComponent>root.instance).list.map(c => c.open = this.showRoot);
 
 				if (!this.showRoot && this.panelsById.has(1)) {
 					const panel = this.panelsById.get(1);

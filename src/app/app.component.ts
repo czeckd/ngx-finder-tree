@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
 	private _leaf   = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11' ];
 
 	showRoot = false;
+	action = '';
 
 	constructor() {
 	}
@@ -47,10 +48,10 @@ export class AppComponent implements OnInit {
 	}
 
 	opened(name: string) {
-console.log('opened: ' + name);
+		this.action = 'opened: ' + name;
 	}
 
 	closed(name: string) {
-console.log('closed: ' + name);
+		this.action = 'closed: ' + name;
 	}
 }
