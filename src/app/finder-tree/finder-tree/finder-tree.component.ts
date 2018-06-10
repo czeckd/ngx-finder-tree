@@ -5,7 +5,6 @@ import { cloneDeep } from 'lodash';
 
 import { PanelEvent } from '../models/panel-event';
 import { FinderTreeNode } from '../models/finder-tree-node';
-import { TreeNode } from '../models/tree-node';
 
 import { FinderTreePanelComponent } from '../finder-tree-panel/finder-tree-panel.component';
 

@@ -25,7 +25,9 @@
 	}
 
 	button.open {
-		background-color: rgba(50, 200, 50, .6);
+/*		background-color: rgba(50, 200, 50, .6); */
+		/* TODO: This should be a mixin! */
+		background-color: #ffd740;
 	}
 
 	mat-icon {
