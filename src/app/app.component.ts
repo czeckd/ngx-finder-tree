@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TreeNode } from './finder-tree/models/tree-node';
+import { FinderTreeNode } from './finder-tree/models/finder-tree-node';
 
 @Component({
 	selector: 'app-root',
@@ -9,12 +9,12 @@ import { TreeNode } from './finder-tree/models/tree-node';
 })
 export class AppComponent implements OnInit {
 
-	root: TreeNode;
+	root: FinderTreeNode;
 
-	private _trunk  = [ 'A', 'B', 'C' ];
-	private _branch = [ 'a', 'b', 'c', 'd' ];
-	private _twig   = [ 'i', 'ii', 'iii', 'iv', 'v' ];
-	private _leaf   = [ '1', '2', '3' ];
+	private _trunk  = [ 'A', 'B', 'C', 'D', 'E', 'F' ];
+	private _branch = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k' ];
+	private _twig   = [ 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi' ];
+	private _leaf   = [ '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11' ];
 
 	showRoot = false;
 
@@ -22,19 +22,35 @@ export class AppComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.root = new TreeNode('root');
-		for (let tr = 0; tr < this._trunk.length; tr += 1) {
-			const trunk = new TreeNode(this._trunk[tr]);
-			for (let br = 0; br < this._branch.length; br += 1) {
-				const branch = new TreeNode(this._trunk[tr] + '.' + this._branch[br]);
-				for (let tw = 0; tw < this._twig.length; tw += 1) {
-					const twig = new TreeNode(this._trunk[tr] + '.' + this._branch[br] + '.' + this._twig[tw],
-						this._leaf.map(l =>	new TreeNode(this._trunk[tr] + '.' + this._branch[br] + '.' + this._twig[tw] + '.' + l)));
+		this.root = new FinderTreeNode('root');
+		const trunks = this.random() / 2;
+		for (let tr = 0; tr < trunks; tr += 1) {
+			const trunk = new FinderTreeNode(this._trunk[tr]);
+			const branches = this.random();
+			for (let br = 0; br < branches; br += 1) {
+				const branch = new FinderTreeNode(this._trunk[tr] + '.' + this._branch[br]);
+				const twigs = this.random();
+				for (let tw = 0; tw < twigs; tw += 1) {
+					const leaves = this._leaf.slice(0, this.random());
+					const twig = new FinderTreeNode(this._trunk[tr] + '.' + this._branch[br] + '.' + this._twig[tw],
+						leaves.map(l =>	new FinderTreeNode(this._trunk[tr] + '.' + this._branch[br] + '.' + this._twig[tw] + '.' + l)));
 					branch.children.push(twig);
 				}
 				trunk.children.push(branch);
 			}
 			this.root.children.push(trunk);
 		}
+	}
+
+	random(): number {
+		return Math.floor((Math.random() * 11));
+	}
+
+	opened(name: string) {
+console.log('opened: ' + name);
+	}
+
+	closed(name: string) {
+console.log('closed: ' + name);
 	}
 }

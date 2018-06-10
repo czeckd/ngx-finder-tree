@@ -1,9 +1,9 @@
-<!-- <czeckd-finder-tree [tree]="root" [showRoot]="showRoot"></czeckd-finder-tree> -->
-<czeckd-finder-tree [tree]="root" [showRoot]="showRoot"></czeckd-finder-tree>
+<div class="panel">
+	<czeckd-finder-tree [tree]="root" [showRoot]="showRoot" (openNode)="opened($event)" (closeNode)="closed($event)"></czeckd-finder-tree>
+</div>
 
-
-<div style="margin-top:20px;">
+<div class="panel">
 	<form>
-		<label>Show root <input type="checkbox" [(ngModel)]="showRoot" name="sr"></label>
+		<mat-checkbox [(ngModel)]="showRoot" name="sr" [labelPosition]="before">Show root</mat-checkbox>
 	</form>
 </div>

@@ -23,12 +23,8 @@ export class FinderTreePanelComponent {
 			node.open = false;
 			this.closeChildren.emit(new PanelEvent(node, this.id));
 		} else {
-			if (node.parent) {
-				node.parent.children.map( (n: FinderTreeNode) => n.open = false);
-			}
 			node.open = true;
 			this.openChildren.emit(new PanelEvent(node, this.id));
 		}
 	}
-
 }

@@ -1,16 +1,37 @@
-ul {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+.czeckd-finder-tree-panel {
+	min-width: 150px;
+	height: 100%;
+
+	::ng-deep .mat-list {
+		padding-top: 0;
+	}
+
+	::ng-deep .mat-list-item-content {
+		padding: 0 !important;
+	}
+
+	::ng-deep .mat-list-item {
+		height: 36px;
+	}
+
 }
 
-button {
-	border-radius: 2px;
-	outline: none;
-}
+.czeckd-finder-tree-panel-list-item {
+	button {
+		border-radius: 2px;
+		outline: none;
+		width: 100%;
+		text-align: left;
+	}
 
-button.open {
-	background-color: rgba(50, 200, 50, .6);
-}
+	button.open {
+		background-color: rgba(50, 200, 50, .6);
+	}
 
+	mat-icon {
+		float: right;
+		position: relative;
+		top: 6px;
+	}
+}
 

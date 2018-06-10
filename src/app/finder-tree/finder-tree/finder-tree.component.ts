@@ -1,5 +1,5 @@
-import { Component, ComponentFactory, ComponentFactoryResolver, ComponentRef,
-	Inject, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, EventEmitter, Inject, Input,
+	OnChanges, OnDestroy, Output, SimpleChanges, ViewChild, ViewContainerRef } from '@angular/core';
 
 import { cloneDeep } from 'lodash';
 
@@ -16,11 +16,13 @@ import { FinderTreePanelComponent } from '../finder-tree-panel/finder-tree-panel
 })
 export class FinderTreeComponent implements OnChanges, OnDestroy {
 	@ViewChild('frame', { read: ViewContainerRef }) frame: ViewContainerRef;
-	@Input() tree: TreeNode;
+	@Input() tree: FinderTreeNode;
 	@Input() showRoot = false;
 
+	@Output() openNode = new EventEmitter<string>();
+	@Output() closeNode = new EventEmitter<string>();
+
 	finder: FinderTreeNode;
-	fauxRoot: FinderTreeNode;
 
 	private panelCount = 0;
 	private factory: ComponentFactory<FinderTreePanelComponent>;
@@ -36,7 +38,7 @@ export class FinderTreeComponent implements OnChanges, OnDestroy {
 
 	ngOnChanges(changes: SimpleChanges) {
 		if (changes.tree) {
-			this.finder = new FinderTreeNode(cloneDeep(this.tree));
+			this.finder = cloneDeep(this.tree);
 
 			// Clean-up existing panels.
 			this.panelsById.forEach(p => p.destroy());
@@ -84,7 +86,7 @@ export class FinderTreeComponent implements OnChanges, OnDestroy {
 		(<FinderTreePanelComponent>panel.instance).list = children;
 		(<FinderTreePanelComponent>panel.instance).openChildren.subscribe(pe => this.openChildren(pe));
 		(<FinderTreePanelComponent>panel.instance).closeChildren.subscribe(pe => this.closeChildren(pe));
-		(<FinderTreePanelComponent>panel.instance).display = show;
+		(<FinderTreePanelComponent>panel.instance).display = (children.length ? show : false);
 
 		this.panelsById.set(this.panelCount, panel);
 
@@ -96,18 +98,34 @@ export class FinderTreeComponent implements OnChanges, OnDestroy {
 		const id = pe.id;
 		const childPanelId = id + 1;
 
+		this.openNode.emit(node.name);
+
 		if (this.panelsById.has(childPanelId)) {
 			const panel = this.panelsById.get(childPanelId);
+			node.children.map(c => c.open = false);
 			(<FinderTreePanelComponent>panel.instance).list = node.children;
-			(<FinderTreePanelComponent>panel.instance).display = true;
+			(<FinderTreePanelComponent>panel.instance).display = (node.children.length ? true : false);
 			this.hidePanels(id + 1);
 		} else {
 			const panel = this.addPanel(node.children);
 		}
+		if (node.open) {
+			this.closeSiblings(pe);
+		}
 	}
 
 	closeChildren(pe: PanelEvent) {
+		this.closeNode.emit(pe.node.name);
 		this.hidePanels(pe.id);
+	}
+
+	closeSiblings(pe: PanelEvent) {
+		const panel = this.panelsById.get(pe.id);
+		(<FinderTreePanelComponent>panel.instance).list.map(c => {
+			if (c != pe.node) {
+				c.open = false
+			}
+		});
 	}
 
 	hidePanels(base: number) {
