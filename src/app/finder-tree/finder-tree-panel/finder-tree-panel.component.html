@@ -1,0 +1,7 @@
+<div [style.display]="display ? 'block' : 'none'">
+	<ul>
+		<li *ngFor="let node of list; let i = index">
+			<button (click)="openNode(node)" [ngClass]="{ 'open' : node.open }">{{node.name}}</button>
+		</li>
+	</ul>
+</div>

@@ -1,0 +1,31 @@
+
+.czeckd-finder-tree {
+	display: flex;
+	flex-direction: row;
+
+	border: 1px solid green;
+}
+
+.czeckd-finder-tree-column {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid blue;
+}
+
+.czeckd-finder-tree-column button {
+	border: 0;
+}
+
+ul {
+	list-style-type: none;
+	background-color: #eee;
+}
+
+button {
+	border-radius: 2px;
+	outline: none;
+}
+
+button.open {
+	background-color: rgba(50, 200, 50, .6);
+}
